@@ -1,0 +1,126 @@
+{
+	"analyzers": {
+		"name":"IMU",
+		"csv": "splitLabeledColumns",
+		"client": {
+			"name":"IMU",
+			"port":0,
+			"queue": true,
+			"filter": {
+				"default":"IMU"
+			},
+			"topic":"(usb-Sportable.+CLI_NH_$(DUT)-if00)"
+		},
+		"outLayer":"dll",
+		"updateRate": 50000,
+		"channels": [
+			{
+				"type":"SensorImu",
+				"fields": [
+					{
+						"field":"SensorImu.time",
+						"label":"IMU time"
+					},
+					{
+						"field":"SensorImu.gyro.x",
+						"label":"IMU Gyro X",
+						"index": 10,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(gyroScale)
+					},
+					{
+						"field":"SensorImu.gyro.y",
+						"label":"IMU Gyro Y",
+						"index": 20,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(gyroScale)
+					},
+					{
+						"field":"SensorImu.gyro.z",
+						"label":"IMU Gyro Z",
+						"index": 30,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(gyroScale)
+					},
+					{
+						"field":"SensorImu.accel.x",
+						"label":"IMU Accel X",
+						"index": 40,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(accelScale)
+					},
+					{
+						"field":"SensorImu.accel.y",
+						"label":"IMU Accel Y",
+						"index": 50,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(accelScale)
+					},
+					{
+						"field":"SensorImu.accel.z",
+						"label":"IMU Accel Z",
+						"index": 60,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(accelScale)
+					},
+					{
+						"field":"SensorImu.magnet.x",
+						"label":"IMU Magnet X",
+						"index": 70,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(magnetScale)
+					},
+					{
+						"field":"SensorImu.magnet.y",
+						"label":"IMU Magnet Y",
+						"index": 80,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(magnetScale)
+					},
+					{
+						"field":"SensorImu.magnet.z",
+						"label":"IMU Magnet Z",
+						"index": 90,
+						"mode":"mean",
+						"depth":20,
+						"scale":$(magnetScale)
+					}
+				],
+				"selector": {
+					"type":"PacketMetadata",
+					"fields":{
+						"default":"IMU",
+						"fieldType":"source",
+						"fieldTrueType":"crock32"
+					}
+				}
+			}
+		]
+	},
+	"servers":[
+		{
+			"type": "udp",
+			"name": "udpImu",
+			"endpoint":"127.0.0.1",
+			"mode": "dedicated subscriber",
+			"port": 8691,
+			"clients": 5,
+			"rate": 100000,
+			"queue": false,
+			"topic": "IMU",
+			"filter": {
+				"input": "json",
+				"packetId":"channelLabel|channelValue"
+			},
+			"topic": "IMU"
+		}
+	]
+}

@@ -1,0 +1,17 @@
+{
+    "identifier":"BALL_PRODUCTION_TEST | SB_TaP_MP02 | SWIFT_HW03_bomB",
+    "hardwareVariant":{
+        "pcbType":"PcbTypeSwift",
+        "pcbRevision":4,
+        "bomVariant":"BomVariantAlpha",
+        "bomRevision":"BomRevisionB"
+    },
+    "commandLineArguments":[
+	"--ball-test",
+        "--skip-config",
+        "--no-variant",
+        "--kick-menu"
+    ],
+    "issuedDeviceIds":[
+    ]
+}

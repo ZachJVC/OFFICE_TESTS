@@ -1,0 +1,149 @@
+{
+"servers": [
+	{
+		"type": "tcp",
+		"name": "tcpErrorReport",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated publisher/subscriber",
+		"port": 8690,
+		"clients": 5,
+		"rate": 100000,
+		"queue": true,
+		"topic": "errors",
+		"filter":
+		{
+			"default":"errors",
+			"input": "json",
+			"protocol": {
+				"filterNaN":true
+			}
+		}
+	},
+    {
+		"type": "udp",
+		"name": "udpSlowSensor",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated subscriber",
+		"port": 8698,
+		"clients": 5,
+		"rate": 100000,
+		"queue": false,
+		"filter":
+		{
+			"input": "json",
+			"filter": {
+				"slowSensor":true
+			}
+		},
+		"topic": "(usb-Sportable.+CLI_NH_$(DUT)-if00)"
+	},
+	{
+		"type": "tcp",
+		"name": "flashDUT",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated publisher/subscriber",
+		"port": 8693,
+		"clients": 5,
+		"rate": 100000,
+		"queue": false,
+		"filter":
+		{
+			"input": "json",
+			"default": "(usb-Sportable.+CLI_NH_$(DUT)-if00-control)",
+			"protocol": {
+				"blocking":true,
+				"useFrameCount":true
+			},
+			"filter": {
+				"live": false,
+				"UWB": false
+			}
+		},
+		"topic": "(usb-Sportable.+CLI_NH_$(DUT)-if00)"
+	},
+	{
+		"type": "tcp",
+		"name": "tcpDUT",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated publisher/subscriber",
+		"port": 8694,
+		"clients": 5,
+		"rate": 100000,
+		"queue": false,
+		"filter":
+		{
+			"input": "json",
+			"default": "(usb-Sportable.+CLI_NH_$(DUT)-if00-control)",
+			"protocol": {
+				"blocking":$(DUT_BLOCKING),
+				"useFrameCount":true
+			},
+			"filter": {
+				"live": false,
+				"UWB": false
+			}
+		},
+		"topic": "(usb-Sportable.+CLI_NH_$(DUT)-if00)"
+	},
+	{
+		"type": "tcp",
+		"name": "tcpChannelReport",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated publisher/subscriber",
+		"port": 8688,
+		"clients": 5,
+		"rate": 100000,
+		"queue": false,
+		"filter":
+		{
+			"input": "json",
+			"filter": {
+				"channelValue":true
+			}
+		},
+		"topic": "(usb-Sportable.+CLI_NH_$(DUT)-if00)"
+	},
+    {
+		"type": "tcp",
+		"name": "tcpMaster",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated publisher/subscriber",
+		"port": 8695,
+		"clients": 5,
+		"rate": 100000,
+		"queue": false,
+		"filter":
+		{
+			"input": "json",
+			"default": "(usb-Sportable.+CLI_NH_$(MASTER)-if00-control)",
+			"protocol": {
+				"blocking":$(MASTER_BLOCKING),
+				"useFrameCount":false
+			},
+			"filter": {
+				"live": false,
+				"UWB": false
+			}
+		},
+		"topic": "(usb-Sportable.+CLI_NH_$(MASTER)-if00)"
+	},
+	{
+		"type": "tcp",
+		"name": "tcpNetworkMetrics",
+		"endpoint": "127.0.0.1",
+		"mode": "dedicated publisher/subscriber",
+		"port": 8699,
+		"clients": 5,
+		"rate": 100000,
+		"queue": false,
+		"filter":
+		{
+			"input": "json",
+			"filter": {
+				"networkMetrics":true
+			}
+		},
+		"topic": "(usb-Sportable.+CLI_NH_$(MASTER)-if00)"
+	}
+]
+}
